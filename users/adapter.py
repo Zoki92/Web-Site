@@ -16,7 +16,7 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
 
         try:
             email = sociallogin.account.extra_data['email'].lower()
-            user = settings.AUTH_USER_MODEL.objects.get(email__iexact=email)
+            user = settings.CustomUser.objects.get(email__iexact=email)
 
         except CustomUser.DoesNotExist:
             return
@@ -24,7 +24,4 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
 
         sociallogin.connect(request, user)
 
-#
-# class MyDefaultAcountAdapter(DefaultAccountAdapter):
-#
-#     def password_reset(self, request, user):
+
