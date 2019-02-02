@@ -179,8 +179,8 @@ SUMMERNOTE_THEME = 'bs4'
 ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 
 # emaillogin_project/settings.py
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 try:
     from .local_settings import *
