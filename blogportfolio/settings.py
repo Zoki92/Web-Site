@@ -1,19 +1,18 @@
 
 import os
 from django.contrib.messages import constants as messages
-from decouple import config, Csv
-import dj_database_url
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 
 
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = 'not_secret'
 
 
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = True
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=Csv())
+ALLOWED_HOSTS = []
 
 
 
@@ -84,12 +83,14 @@ WSGI_APPLICATION = 'blogportfolio.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=config('DATABASE_URL')
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'portfolio',
+        'USER': 'postgres',
+        'PASSWORD': '123456',
+        'HOST': 'localhost'
+    }
 }
-
-
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -180,11 +181,6 @@ ACCOUNT_LOGOUT_ON_PASSWORD_CHANGE = True
 # emaillogin_project/settings.py
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-EMAIL_USE_TLS = True
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 
 try:
     from .local_settings import *
