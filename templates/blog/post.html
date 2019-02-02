@@ -1,0 +1,80 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+{% block title %}{% endblock title %}
+
+
+      <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+          <h3 class="alert text-white" style="background-color: #007bff">Latest:</h3>
+            <hr>
+           {% include 'partials/breadcrumbs.html' with current="post" %}
+          <div class="card mb-4">
+
+            <div class="card-body" style="background: #e9ecef">
+              <h2 class="card-title">
+                {% if post.category == 'D' %}
+                <a href="{% url 'post_detail_django' post.slug %}">{{ post.title }}</a>
+                {% elif post.category == 'L' %}
+                <a href="{% url 'post_detail_lifestyle' post.slug %}">{{ post.title }}</a>
+                {% endif %}
+              </h2>
+                <h5 class="text-secondary" >By {{ post.author.username }}</h5>
+                <span class="d-inline text-secondary">
+                {% for tag in post.tags.all %} <span class="badge badge-info">#{{ tag }}</span>
+                {% endfor %}
+                </span>
+              <p class="card-text">{{ post.content|safe }}</p>
+              <span class="text-primary"><a {% if post.category == 'L' %}
+                                            href="{% url 'lifestyle_posts' %}"
+                                            {% elif post.category == 'D' %}
+                                            href="{% url 'django_posts' %}"
+                                            {% endif %}
+                                            style="text-decoration:none;">Category: {{ post.get_category_display }}</a></span>
+            </div>
+            <div class="card-footer" style="background: #e9ecef">
+              <i class="fas fa-calendar-alt"></i> {{ post.timestamp }}
+
+              <span class="float-right">Comments ({{ post.comments.count }})</span>
+            </div>
+          </div>
+        </div>
+         <div class="col-md-4">
+                <div class="threes">
+              <div class="card-deck d-block mt-1">
+              <div class="card d-block mb-5">
+                <img class="card-img-top" src="{% static 'images/django-logo-resized.jpg' %}" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">Django Blog</h5>
+                  <p class="card-text">Blog where I write mostly about Django and some JavaScript, including the libraries and
+            frameworks. Stay tuned for cool tutorials.</p>
+                  <button class="btn"><a href="{% url 'django_posts' %}">Click to see Posts</a></button>
+                </div>
+                <div class="card-footer">
+                  <small>Last updated {{ django_post.updated|naturaltime }}</small>
+                </div>
+              </div>
+              <div class="card d-block">
+                <img class="card-img-top" src="{% static 'images/blog-logo.jpg' %}" alt="Card image cap">
+                <div class="card-body">
+                  <h5 class="card-title">Lifestyle Blog</h5>
+                  <p class="card-text">Here I write about productivity, discipline, food and general tips which work for me.</p>
+                  <button class="btn"><a href="{% url 'lifestyle_posts' %}">Click to see Posts</a></button>
+                </div>
+                <div class="card-footer">
+                  <small>Last updated {{ lifestyle_post.updated|naturaltime }}</small>
+                </div>
+              </div>
+              </div>
+                </div>
+         </div>
+      </div>
+      <!-- /.row -->
+
+
+
+{% endblock content %}

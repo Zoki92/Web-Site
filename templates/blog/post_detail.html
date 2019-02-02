@@ -1,0 +1,168 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load humanize %}
+{% load mptt_tags %}
+{% load crispy_forms_tags %}
+
+{% block css %}
+    <link rel="stylesheet" href="{% static 'blog/comments.css' %}">
+
+{% endblock css %}
+{% block javascript%}
+    {{ block.super }}
+
+{% endblock javascript %}
+{% block title %}Post <hr class="mt-2 mb-4" />{% endblock %}
+
+
+{% block content %}
+    {% if 'lifestyle' in request.path %}
+    {% include 'partials/breadcrumbs.html' with current=post.title region='lifestyle' %}
+    {% elif 'django' in request.path %}
+    {% include 'partials/breadcrumbs.html' with current=post.title region='django' %}
+    {% endif %}
+    <div class="content p-4">
+    <h4>{{ post.title }}</h4>
+    <p class="text-secondary"><small><i class="fas fa-calendar-alt"></i> {{ post.timestamp }}</small></p>
+     {% for tag in post.tags.all %}
+                <span class="badge badge-primary mb-5">{{ tag }}</span>
+                {% endfor %}
+    {{ post.content|safe }}
+    <hr>
+    </div>
+    <!-- Comments showing -->
+
+    {% if 'django' in request.path %}
+    {% if user.is_authenticated %}
+    <div class="content-section">
+        <form method="POST"  action="{% url 'django_post_comment' post.slug %}" novalidate>
+        {% csrf_token %}
+        <fieldset class="form-group">
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info mt-0" type="submit">Submit</button>
+        </div>
+        </form>
+    </div>
+    {% else %}
+
+    <p class="mt-4 mb-4">Please <a href="{% url 'account_login' %}?next={{request.path}}" style="text-decoration: underline">Log In</a> to submit comments.</p>
+    {% endif %}
+    {% recursetree comments %}
+        {% if node.post == post and post.category == 'D' %}
+       <ul class="list-unstyled mb-2 comments" style="font-size: 0.9rem;">
+          <li class="media">
+                <img class="align-self-top article-img ml-2" src="{{ node.author.profile.image.url }}" alt="Generic placeholder image">
+                <div class="media-body">
+                <div class="mb-2">
+                <p class="font-weight-bold d-inline">{{ node.author.username }} - </p>
+                  <span> {{ node.date_posted|naturaltime }}</span>
+                    <p class="float-right">
+                    {% if user.is_authenticated %}
+                        {% if node.author == user or user.is_staff %}
+                        <a href="{% url 'django_post_comment_delete' post.slug node.pk %}" id="delete_link" class="text-danger mr-1">Delete</a>
+                        {% endif %}
+                        {% if node.is_root_node %}
+                        <a class="" data-toggle="collapse" href="#collapseExample{{ node.pk }}"
+                       role="button" aria-expanded="false" aria-controls="collapseExample1{{ node.pk }}" id="ariaCollapse">
+                        Reply</a>
+                        {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+                <p class="mt-2" style="word-break: break-all">{{ node.comment_content }}</p>
+              </div>
+          </li>
+        </ul>
+        <!-- Comment Form for replies -->
+        <div class="content-section collapse showF" id="collapseExample{{ node.pk }}">
+        <form method="POST" action="{% url 'django_post_comment_reply' post.slug node.pk %}" novalidate>
+        {% csrf_token %}
+        <fieldset class="form-group">
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Submit</button>
+        </div>
+        </form>
+        </div>
+        <!-- End Add Comment Form -->
+     {% if not node.is_leaf_node %}
+    <ul class="children">
+        {{ children }}
+    </ul>
+    {% endif %}
+    {% endif %}
+    {% endrecursetree %}
+    <!-- END Comments showing -->
+
+    {% elif 'lifestyle' in request.path %}
+    {% if user.is_authenticated %}
+    <div class="content-section">
+        <form method="POST"  action="{% url 'lifestyle_post_comment' post.slug %}" novalidate>
+        {% csrf_token %}
+        <fieldset class="form-group">
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Comment</button>
+        </div>
+        </form>
+    </div>
+    {% else %}
+    <p class="mt-4 mb-4">Please <a href="{% url 'account_login' %}?next={{request.path}}" style="text-decoration: underline">Log In</a> to submit comments.</p>
+    {% endif %}
+    {% recursetree comments %}
+        {% if node.post == post and post.category == 'L' %}
+
+        <ul class="list-unstyled mb-2" style="font-size: 0.9rem;">
+          <li class="media">
+                <img class="align-self-top article-img ml-2" src="{{ node.author.profile.image.url }}" alt="Generic placeholder image">
+                <div class="media-body">
+                <div class="mb-2">
+                <p class="font-weight-bold d-inline">{{ node.author.username }} - </p>
+                  <span> {{ node.date_posted|naturaltime }}</span>
+                    <p class="float-right">
+                    {% if user.is_authenticated %}
+                    {% if node.author == user or user.is_staff %}<a href="{% url 'lifestyle_post_comment_delete' post.slug node.pk %}" id="delete_link" class="text-danger mr-1">Delete</a>
+                        {% endif %}
+                    {% if node.is_root_node %}
+                    <a class="" data-toggle="collapse" href="#collapseExample1{{ node.pk }}"
+                       role="button" aria-expanded="false" aria-controls="collapseExample1{{ node.pk }}" id="ariaCollapse1">
+                        Reply</a>
+                    {% endif %}
+                    {% endif %}
+                    </p>
+                </div>
+                <p class="mt-2" style="word-break: break-all">{{ node.comment_content }}</p>
+              </div>
+          </li>
+        </ul>
+
+<!-- Comment Form for replies -->
+        <div class="content-section collapse showF" id="collapseExample1{{ node.pk }}">
+        <form method="POST" action="{% url 'lifestyle_post_comment_reply' post.slug node.pk %}" novalidate>
+        {% csrf_token %}
+
+        <fieldset class="form-group">
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Submit</button>
+        </div>
+        </form>
+        </div>
+        <!-- End Add Comment Form -->
+     {% if not node.is_leaf_node %}
+    <ul class="children">
+        {{ children }}
+    </ul>
+    {% endif %}
+    {% endif %}
+    {% endrecursetree %}
+    <!-- END Comments showing -->
+    {% endif %}
+
+
+{% endblock %}

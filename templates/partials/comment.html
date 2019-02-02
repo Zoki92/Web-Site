@@ -1,0 +1,12 @@
+ {% load crispy_forms_tags %}
+<div class="content-section">
+        <form method="POST"  action="{% url 'django_post_comment' post.slug %}" novalidate>
+        {% csrf_token %}
+        <fieldset class="form-group">
+            {{ form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-info" type="submit">Comment</button>
+        </div>
+        </form>
+ </div>

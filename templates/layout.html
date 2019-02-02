@@ -1,0 +1,174 @@
+<!doctype html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title></title>
+    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+    <link rel="stylesheet" href="{% static 'fontawesome/css/all.css' %}">
+
+    {% block css %}
+
+    {% endblock css %}
+
+ <style>
+      .asteriskField {
+        display: none;
+      }
+    </style>
+<body>
+{% include 'partials/_navbar.html' %}
+<div class="container">
+      {% include 'partials/messages.html' %}
+          <h1 class="mt-2 text-center">{% block title %}Accounts
+              <hr class="mt-0 mb-4" />
+              {% endblock %}</h1>
+
+          {% block content %} {% endblock %}
+        </div>
+
+      <!-- Footer -->
+<footer class="page-footer font-small indigo">
+
+    <!-- Footer Links -->
+    <div class="container">
+
+      <!-- Grid row-->
+      <div class="row text-center d-flex justify-content-center pt-5 mb-3">
+
+        <!-- Grid column -->
+        <div class="col-md-2 mb-3">
+          <h6 class="text-uppercase font-weight-bold">
+            <a href="#!">About us</a>
+          </h6>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2 mb-3">
+          <h6 class="text-uppercase font-weight-bold">
+            <a href="#!">Products</a>
+          </h6>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2 mb-3">
+          <h6 class="text-uppercase font-weight-bold">
+            <a href="#!">Awards</a>
+          </h6>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2 mb-3">
+          <h6 class="text-uppercase font-weight-bold">
+            <a href="#!">Help</a>
+          </h6>
+        </div>
+        <!-- Grid column -->
+
+        <!-- Grid column -->
+        <div class="col-md-2 mb-3">
+          <h6 class="text-uppercase font-weight-bold">
+            <a href="#!">Contact</a>
+          </h6>
+        </div>
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row-->
+      <hr style="margin: 0 15%;">
+
+      <!-- Grid row-->
+      <div class="row d-flex text-center justify-content-center mb-md-0 mb-4">
+
+        <!-- Grid column -->
+        <div class="col-md-8 col-12 mt-5">
+          <p style="line-height: 1.7rem">"Grit is that ‘extra something’ that separates the most successful people from the rest.
+              It’s the passion, perseverance, and stamina that we must channel in order to stick with our dreams until they become a reality."
+              - Travis Bradberry</p>
+        </div>
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row-->
+      <hr class="clearfix d-md-none rgba-white-light" style="margin: 10% 15% 5%;">
+
+      <!-- Grid row-->
+      <div class="row pb-3">
+
+        <div class="col-md-3"></div>
+
+
+
+          <div class="col-md-6 text-center">
+
+            <!-- Facebook -->
+            <a class="fb-ic">
+              <i class="fab fa-facebook fa-lg mr-4"> </i>
+            </a>
+            <!-- Twitter -->
+            <a class="tw-ic">
+              <i class="fab fa-twitter fa-lg mr-4"> </i>
+            </a>
+            <!-- Google +-->
+            <a class="gplus-ic">
+              <i class="fab fa-google-plus fa-lg mr-4"> </i>
+            </a>
+            <!--Linkedin -->
+            <a class="li-ic">
+              <i class="fab fa-linkedin fa-lg mr-4"> </i>
+            </a>
+            <!--Instagram-->
+            <a class="ins-ic">
+              <i class="fab fa-instagram fa-lg mr-4"> </i>
+            </a>
+            <!--Pinterest-->
+            <a class="pin-ic">
+              <i class="fab fa-pinterest fa-lg"> </i>
+            </a>
+
+          </div>
+
+
+         <div class="col-md-3"></div>
+
+        <!-- Grid column -->
+
+      </div>
+      <!-- Grid row-->
+
+    </div>
+    <!-- Footer Links -->
+
+    <!-- Copyright -->
+    <div class="footer-copyright text-center py-3">© 2018 Copyright
+    </div>
+    <!-- Copyright -->
+
+  </footer>
+  <!-- Footer -->
+        {% block scripts %}
+         <script src="{% static 'js/jquery.js' %}"></script>
+        <script src="{% static 'bootstrap/js/popper.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+        {% endblock scripts %}
+        {% block javascript %}
+          <script>
+          if (document.querySelector(".alert-dismissible")) {
+            setTimeout(function() {
+              document.querySelector(".alert-dismissible").remove();
+            }, 3000);
+          }
+           if (document.querySelector(".alert-dismissible")) {
+            setTimeout(function() {
+              document.querySelector(".alert-dismissible").remove();
+            }, 3000);
+          }
+
+        </script>
+        {% endblock javascript %}
+</body>
+</html>

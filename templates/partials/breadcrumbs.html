@@ -1,0 +1,32 @@
+
+<nav aria-label="breadcrumb" class="mt-4">
+  {% if current == 'post' %}
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Blog</li>
+  </ol>
+  {% elif current == 'django' %}
+    <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'blog' %}">Blog</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Django Posts</li>
+  </ol>
+  {% elif current == 'lifestyle' %}
+   <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'blog' %}">Blog</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Lifestyle Posts</li>
+  </ol>
+  {% elif current %}
+    <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{% url 'home' %}">Home</a></li>
+      <li class="breadcrumb-item"><a href="{% url 'blog' %}">Blog</a></li>
+      {% if region == 'django' %}
+      <li class="breadcrumb-item"><a href="{% url 'django_posts' %}">Django Posts</a></li>
+      {% elif region == 'lifestyle' %}
+      <li class="breadcrumb-item"><a href="{% url 'lifestyle_posts' %}">Lifestyle Posts</a></li>
+      {% endif %}
+      <li class="breadcrumb-item active" aria-current="page">{{ current }}</li>
+  </ol>
+  {% endif %}
+</nav>

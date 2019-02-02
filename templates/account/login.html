@@ -1,0 +1,88 @@
+{% extends 'layout.html' %}
+{% load static %}
+{% load socialaccount %}
+<!--{% block css %} <link rel="stylesheet" href="{% static 'css/main.css' %}"> {% endblock css %}-->
+{% load crispy_forms_tags %}
+
+{% block javascript %}
+
+{{ block.super }}
+<script>
+  const email = document.getElementById("id_login");
+  const password = document.getElementById("id_password");
+  const para = document.createElement("p");
+  const strong1 = document.createElement("strong");
+  strong1.appendChild(document.createTextNode("Please enter valid email"));
+  para.appendChild(strong1);
+  para.classList.add("text-danger", "mt-1");
+  para.style.fontSize = "80%";
+  const div_email = document.getElementById("div_id_login");
+
+  function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
+  email.onchange = function() {
+    if (email.value !== "" && validateEmail(email.value)) {
+      if (email.classList.contains("is-invalid") || para) {
+        para.innerHTML = "";
+        email.classList.remove("is-invalid");
+        email.classList.add("is-valid");
+      } else {
+        email.classList.add("is-valid");
+      }
+    } else {
+      if (document.getElementById("error_1_id_login")) {
+        document.getElementById("error_1_id_login").remove();
+        div_email.appendChild(para);
+      } else {
+        div_email.appendChild(para);
+      }
+    }
+  };
+
+  password.onchange = function() {
+    if (password.value !== "") {
+      password.classList.remove("is-invalid");
+      password.classList.add("is-valid");
+    } else {
+      password.classList.add("is-invalid");
+    }
+  };
+</script>
+{% endblock javascript %}
+
+{% block content %}
+<div class="alert alert-success d-block">
+  <h5 class="text-center">Log In</h5>
+</div>
+<div class="card d-block border-success mb-5">
+  <div class="card-body">
+    {% for error in form.non_field_errors %}
+    <div class="alert alert-danger alert-dismissible" role="alert">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="alert"
+        aria-label="Close"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      {{ error }}
+    </div>
+    {% endfor %}
+    <form method="post" class="login" novalidate>
+      {% csrf_token %}
+      {{ form.login|as_crispy_field }}
+      {{ form.password|as_crispy_field }}
+      <button class="btn btn-success mt-2" type="submit"><i class="fas fa-check-circle mr-1"></i>Log In</button>
+      <a class="btn btn-dark mt-2" href="{% provider_login_url 'github' %}"><i class="fab fa-github-square 3x mr-2"></i>Log in with GitHub</a>
+    </form>
+  </div>
+</div>
+
+
+ <div><p>Forgot Password? - <a href="{% url 'account_reset_password' %}" class="text-danger" style="text-decoration: underline;">Click here</a></p></div>
+
+{% endblock %}
